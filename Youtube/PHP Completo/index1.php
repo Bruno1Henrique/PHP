@@ -1,6 +1,4 @@
-<?php
-    $html = "<h1>Ola mundo!</h1><p>Olha que legal</p>"
-?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -11,6 +9,11 @@
     <title>Document</title>
 </head>
 <body>
-    <?php echo $html; ?>
+    <?php $ativado = "sim"; ?>
+    <?php if ($ativado == "sim"){ ?>
+        <h1>Está ativado</h1>
+    <?php }else{ ?>
+        <h1>Não está ativado</h1>
+    <?php } ?>
 </body>
 </html>
