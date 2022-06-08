@@ -1,5 +1,6 @@
 <?php
 require('db/conexao.php');
+//COMANDO PARA DELETAR
 
 
 ?>
@@ -40,7 +41,15 @@ require('db/conexao.php');
         <input type="email" id="email_editado" name="email_editado" placeholder="Editar Email" required>
         <button type="submit" name="atualizar">Atualizar</button>
         <button type="submit" id="cancelar" name="cancelar">Cancelar</button>
-        
+    </form>
+
+    <form class="oculto" id="form_deleta" method="POST">
+        <input type="hidden" id="id_deleta" name="id_deleta" placeholder="ID" required>
+        <input type="hidden" id="nome_deleta" name="nome_deleta" placeholder="Editar Nome" required>
+        <input type="hidden" id="email_deleta" name="email_deleta" placeholder="Editar Email" required>
+        <b>Tem certeza que quer deletar usuário cliente<span id="cliente"></span>?</b>
+        <button type="submit" name="deletar">Confirmar</button>
+        <button type="submit" id="cancelar_delete" name="cancelar_delete">Cancelar</button>
     </form>
 
     <?php
@@ -130,8 +139,24 @@ if(isset($_POST['salvar']) && isset($_POST['nome'])&& isset($_POST['email'])){
 
     <?php
 
+    //Deletar dados 
+    if(isset($_POST['deletar']) && ($_POST['id_deleta']) && ($_POST['nome_deleta']) && ($_POST['email_deleta'])){
+        $id=limparPost($_POST['id_deleta']);
+        $nome=limparPost($_POST['nome_deleta']);
+        $email=limparPost($_POST['email_deleta']);
+
+        $sql = $pdo->prepare("DELETE FROM clientes WHERE uid=? AND nome=? AND email=?");
+        $sql->execute(array($id, $nome, $email));
+
+        echo "Deletado com sucesso";
+    }
+
+    ?>
+
+    <?php
+
         //SELECIONAR DADOS DA TABELA
-        $sql = $pdo->prepare("SELECT * FROM clientes");
+        $sql = $pdo->prepare("SELECT * FROM clientes ORDER BY uid LIMIT 1");
         $sql->execute();
         $dados = $sql->fetchAll();
 
@@ -155,7 +180,7 @@ if(isset($_POST['salvar']) && isset($_POST['nome'])&& isset($_POST['email'])){
                         <td>".$valor['uid']."</td>
                         <td>".$valor['nome']."</td>
                         <td>".$valor['email']."</td>
-                        <td><a href='#' class='btn-atualizar' data-id='".$valor['uid']."' data-nome='".$valor['nome']."' data-email='".$valor['email']."'>Atualizar</a></td>
+                        <td><a href='#' class='btn-atualizar' data-id='".$valor['uid']."' data-nome='".$valor['nome']."' data-email='".$valor['email']."'>Atualizar</a> | <a href='#' class='btn-deletar' data-id='".$valor['uid']."' data-nome='".$valor['nome']."' data-email='".$valor['email']."'>Deletar</a></td>
                      </tr>";
             }
 
@@ -176,6 +201,7 @@ if(isset($_POST['salvar']) && isset($_POST['nome'])&& isset($_POST['email'])){
 
             $('#form_salva').addClass('oculto');
             $('#form_atualiza').removeClass('oculto');
+            $('#form_deleta').addClass('oculto');
 
             $("#id_editado").val(uid);
             $("#nome_editado").val(nome);
@@ -184,9 +210,35 @@ if(isset($_POST['salvar']) && isset($_POST['nome'])&& isset($_POST['email'])){
             //alert('O ID é: '+uid+" | nome é: "+nome+" | email é: "+email);
         });
 
+        $(".btn-deletar").click(function(){
+            var uid = $(this).attr('data-id'); 
+            var nome = $(this).attr('data-nome'); 
+            var email = $(this).attr('data-email'); 
+
+            $("#id_deleta").val(uid);
+            $("#nome_deleta").val(nome);
+            $("#email_deleta").val(email);
+            $("#cliente").html(nome);
+
+            $('#form_salva').addClass('oculto');
+            $('#form_atualiza').addClass('oculto');
+            $('#form_deleta').removeClass('oculto');
+
+            
+
+            //alert('O ID é: '+uid+" | nome é: "+nome+" | email é: "+email);
+        });
+
         $('#cancelar').click(function(){
             $('#form_salva').removeClass('oculto');
             $('#form_atualiza').addClass('oculto');
+            $('#form_deleta').addClass('oculto');
+        });
+
+        $('#cancelar_delete').click(function(){
+            $('#form_salva').removeClass('oculto');
+            $('#form_atualiza').addClass('oculto');
+            $('#form_deleta').addClass('oculto');
         });
     </script>
 
