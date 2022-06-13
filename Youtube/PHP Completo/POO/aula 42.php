@@ -20,6 +20,10 @@ class Carros{
         return $this->modelo;
     }
 
+    protected function protegida(){
+        echo "Sou um método protegido";
+    }
+
     function __destruct()
     {
         echo "Chegamos no final da nossa classe";
@@ -27,4 +31,4 @@ class Carros{
 }
 
 $uno = new Carros("Uno",2015);
-var_dump($uno);
+
