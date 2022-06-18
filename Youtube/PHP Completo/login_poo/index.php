@@ -32,12 +32,12 @@ if(isset($_POST['email']) && isset($_POST['senha']) && !empty($_POST['email']) &
 
         <div class="input-group">
             <img class="input-icon" src="img/user.png">
-            <input type="email" name= "email" placeholder="Digite seu email" required>
+            <input type="email" name= "email" placeholder="Digite seu email">
         </div>
         
         <div class="input-group">
             <img class="input-icon" src="img/lock.png">
-            <input type="password" name="senha" placeholder="Digite sua senha" required>
+            <input type="password" name="senha" placeholder="Digite sua senha">
         </div>
        
         <button class="btn-blue" type="submit">Fazer Login</button>
